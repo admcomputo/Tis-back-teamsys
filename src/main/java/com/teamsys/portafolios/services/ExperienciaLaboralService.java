@@ -45,7 +45,7 @@ public class ExperienciaLaboralService {
                 .orElseThrow(() -> new RuntimeException("Experiencia laboral no encontrada"));
 
         // Verificación de seguridad: asegurar que la experiencia pertenece al usuario
-        if (!exp.getUsuario().getId().equals(usuario.getId())) {
+        if (!exp.getUsuario().getIdUsuario().equals(usuario.getIdUsuario())) {
             throw new RuntimeException("No tienes permiso para editar esta experiencia");
         }
 

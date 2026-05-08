@@ -64,7 +64,7 @@ public class ExperienciaLaboralController {
     }
 
     private Usuario obtenerUsuario(Authentication authentication) {
-        return usuarioRepository.findByEmail(authentication.getName())
+        return usuarioRepository.findByCorreo(authentication.getName())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     }
 }
