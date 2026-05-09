@@ -96,26 +96,32 @@ public class UsuarioController {
             @RequestBody UsuarioInformacionBasicaDTO dto,
             Authentication authentication) {
 
+        try {
+            
+        
         String correoAutenticado = authentication.getName();
 
         Usuario usuarioLogueado = usuarioRepository.findByCorreo(correoAutenticado)
                 .orElseThrow(() -> new RuntimeException("Usuario autenticado no encontrado"));
 
-        boolean actualizado = usuarioService.actualizarInformacionBasica(dto, usuarioLogueado);
+         usuarioService.actualizarInformacionBasica(dto, usuarioLogueado);
 
-        if (actualizado) {
             // Devolvemos un objeto JSON estructurado
             return ResponseEntity.ok(java.util.Map.of(
                     "success", true,
                     "message", "Perfil actualizado con éxito",
                     "data", dto
             ));
-        } else {
+
+            } catch (Exception e) {
+            // TODO: handle exception
+        
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(java.util.Map.of(
                             "success", false,
-                            "message", "Error al actualizar los datos."
+                            "message", e.getMessage()
                     ));
+
         }
     }
 
@@ -134,6 +140,9 @@ public class UsuarioController {
             perfil.setNombre(usuario.getNombre());
             perfil.setBiografia(usuario.getBiografia());
             perfil.setFoto(usuario.getFoto());
+            perfil.setTelefono(usuario.getTelefono());
+            perfil.setDireccion(usuario.getDireccion());
+            perfil.setCorreo(usuario.getCorreo());
             // 4. Si tiene profesión, extraemos solo el ID
             if (usuario.getProfesion() != null) {
                 perfil.setIdProfesion(usuario.getProfesion().getIdProfesion());
