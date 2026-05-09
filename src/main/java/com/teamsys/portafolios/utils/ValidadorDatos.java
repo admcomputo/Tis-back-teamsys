@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 public class ValidadorDatos {
 
     // Regex para correo electrónico estándar
-    private static final String EMAIL_PATTERN = "^[A-Za-z0-9+_.-]+@(.+)$";
+    private static final String EMAIL_PATTERN = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,6}$";
 
     // Regex para nombres: Inicia con Mayúscula, permite espacios, sin números
     private static final String NOMBRE_PATTERN = "^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(\\s[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)*$";
@@ -28,7 +28,8 @@ public class ValidadorDatos {
         boolean tieneMayuscula = Pattern.compile("[A-Z]").matcher(password).find();
         boolean tieneMinuscula = Pattern.compile("[a-z]").matcher(password).find();
         boolean tieneNumero = Pattern.compile("[0-9]").matcher(password).find();
-        boolean tieneEspecial = Pattern.compile("[@#$%^&+=!_]").matcher(password).find();
+        // Lista manual muy completa
+        boolean tieneEspecial = Pattern.compile("[@#$%^&+=!_.*,;:\\-\\[\\]{}()<>?¿¡!]").matcher(password).find();
 
         return tieneMayuscula && tieneMinuscula && tieneNumero && tieneEspecial;
     }
