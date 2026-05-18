@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,8 +33,8 @@ public class ProyectoService {
 
     @Transactional
     public ProyectoResponseDTO agregarProyecto(ProyectoRequestDTO dto, Usuario usuario) {
-        // Buscamos las entidades de tecnología por los IDs del DTO
-        List<Tecnologia> tecnologias = tecnologiaRepository.findAllById(dto.getTecnologiaIds());
+        // Procesamos IDs existentes y nombres nuevos
+        List<Tecnologia> tecnologias = procesarTecnologias(dto);
 
         Proyecto proyecto = Proyecto.builder()
                 .titulo(dto.getTitulo())
@@ -60,6 +61,7 @@ public class ProyectoService {
         Proyecto proyecto = proyectoRepository.findByIdProyectoAndUsuario(id, usuario)
                 .orElseThrow(() -> new RuntimeException("Proyecto no encontrado o no autorizado"));
 
+        // Actualizamos los campos y procesamos las tecnologías
         actualizarEntidadDesdeDTO(proyecto, dto);
 
         Proyecto actualizado = proyectoRepository.save(proyecto);
@@ -73,8 +75,39 @@ public class ProyectoService {
         proyectoRepository.delete(proyecto);
     }
 
+    /**
+     * Lógica centralizada para manejar tecnologías por ID y por Nombre
+     */
+    private List<Tecnologia> procesarTecnologias(ProyectoRequestDTO dto) {
+        // 1. Obtener las tecnologías por ID (las que ya existen en el catálogo)
+        List<Tecnologia> tecnologias = (dto.getTecnologiaIds() != null)
+                ? tecnologiaRepository.findAllById(dto.getTecnologiaIds())
+                : new ArrayList<>();
+
+        // 2. Procesar las "nuevasTecnologias" (Strings) enviadas opcionalmente
+        if (dto.getNuevasTecnologias() != null && !dto.getNuevasTecnologias().isEmpty()) {
+            for (String nombre : dto.getNuevasTecnologias()) {
+                // Si la tecnología ya existe por nombre, la recuperamos; si no, la creamos.
+                Tecnologia tec = tecnologiaRepository.findByNombre(nombre)
+                        .orElseGet(() -> {
+                            Tecnologia nueva = new Tecnologia();
+                            nueva.setNombre(nombre);
+                            nueva.setCategoria("Otros"); // Categoría por defecto
+                            return tecnologiaRepository.save(nueva);
+                        });
+
+                // Evitamos duplicados en la lista del proyecto actual
+                if (!tecnologias.contains(tec)) {
+                    tecnologias.add(tec);
+                }
+            }
+        }
+        return tecnologias;
+    }
+
     private void actualizarEntidadDesdeDTO(Proyecto proyecto, ProyectoRequestDTO dto) {
-        List<Tecnologia> tecnologias = tecnologiaRepository.findAllById(dto.getTecnologiaIds());
+        // Importante: Usar la lógica de procesarTecnologias también aquí
+        List<Tecnologia> tecnologias = procesarTecnologias(dto);
 
         proyecto.setTitulo(dto.getTitulo());
         proyecto.setRolProyecto(dto.getRolProyecto());
@@ -99,7 +132,7 @@ public class ProyectoService {
                 .urlsAdicionales(p.getUrlsAdicionales())
                 .urlsImagenes(p.getUrlsImagenes())
                 .tecnologiaIds(p.getTecnologias().stream()
-                        .map(Tecnologia::getId) // Asumiendo que el método en Tecnologia es getId()
+                        .map(Tecnologia::getId)
                         .collect(Collectors.toList()))
                 .enlaceGithub(p.getEnlaceGithub())
                 .enlaceDemo(p.getEnlaceDemo())

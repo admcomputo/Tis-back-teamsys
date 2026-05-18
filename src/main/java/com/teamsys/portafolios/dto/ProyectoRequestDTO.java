@@ -12,6 +12,7 @@ public class ProyectoRequestDTO {
     private List<String> urlsAdicionales; // Agregado
     private List<String> urlsImagenes;
     private List<Long> tecnologiaIds;
+    private List<String> nuevasTecnologias;
     private String enlaceGithub;
     private String enlaceDemo;
     private String fechaInicio; // Agregado (String según tu entidad)

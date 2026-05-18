@@ -40,6 +40,9 @@ public class Usuario {
 
     private LocalDateTime fechaRegistro = LocalDateTime.now();
 
+    @Column(nullable = true)
+    private String disponibilidad ="Disponible"; // Ej: "Inmediata", "A convenir", etc.
+
     // Relación muchos a muchos para Roles
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
