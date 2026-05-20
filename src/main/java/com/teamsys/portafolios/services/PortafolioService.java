@@ -9,8 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.teamsys.portafolios.dto.BusquedaFiltrosDTO;
 import com.teamsys.portafolios.dto.PortafolioResponseDTO;
 import com.teamsys.portafolios.dto.ResultadoBusquedaDTO;
-import com.teamsys.portafolios.entities.*;
-import com.teamsys.portafolios.repositories.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -21,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.Collectors;
 
 @Service
@@ -186,10 +183,7 @@ public class PortafolioService {
                 .build();
     }
 
-    public ResultadoBusquedaDTO buscarPortafoliosConFiltros(
-        BusquedaFiltrosDTO filtros,
-        String correoUsuarioActual
-) {
+    
 
     public ResultadoBusquedaDTO buscarPortafoliosConFiltros(
         BusquedaFiltrosDTO filtros,
@@ -289,11 +283,10 @@ public class PortafolioService {
 
             subqueryForm.select(subqueryFormRoot.get("usuario").get("idUsuario"))
                     .where(cb.or(
-<<<<<<< Updated upstream
+
                             cb.like(cb.lower(subqueryFormRoot.get("institucion")),formacionLike),
-=======
                             cb.like(cb.lower(subqueryFormRoot.get("institucion")), formacionLike),
->>>>>>> Stashed changes
+
                             cb.like(cb.lower(subqueryFormRoot.get("area")), formacionLike),
                             cb.like(cb.lower(subqueryFormRoot.get("tituloObtenido")), formacionLike),
                             cb.like(cb.lower(subqueryFormRoot.get("nivel").as(String.class)), formacionLike)
