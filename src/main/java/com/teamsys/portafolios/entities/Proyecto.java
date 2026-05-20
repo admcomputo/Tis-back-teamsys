@@ -61,6 +61,9 @@ public class Proyecto {
 
     private boolean destacar = true;
 
+    @ElementCollection
+    @CollectionTable(name = "proyecto_pdfs", joinColumns = @JoinColumn(name = "proyecto_id"))
+    @Column(name = "url_pdfs")
     private List<String> urlPdfs;
 
     private String fechaInicio;
