@@ -16,7 +16,7 @@ public class ProyectoRequestDTO {
     private String enlaceGithub;
     private String enlaceDemo;
     private boolean destacar; // Agregado
-    private String urlPdf;      // Agregado
+    private List<String> urlPdfs;      // Agregado
     private String fechaInicio;
     private String fechaFinalizacion;
     private String estadoProyecto;

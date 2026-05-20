@@ -154,6 +154,8 @@ public class EnlacePublicoService {
                             .urlsAdicionales(pro.getUrlsAdicionales())
                             .enlaceGithub(pro.getEnlaceGithub())
                             .enlaceDemo(pro.getEnlaceDemo())
+                            .destacar(pro.isDestacar())
+                            .urlPdfs(pro.getUrlPdfs())
                             .fechaInicio(pro.getFechaInicio())
                             .fechaFinalizacion(pro.getFechaFinalizacion())
                             .estadoProyecto(pro.getEstadoProyecto())

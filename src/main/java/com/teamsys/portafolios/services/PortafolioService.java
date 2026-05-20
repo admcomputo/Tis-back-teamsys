@@ -152,7 +152,7 @@ public class PortafolioService {
                     .fechaInicio(proy.getFechaInicio())
                     .fechaFinalizacion(proy.getFechaFinalizacion())
                     .estadoProyecto(proy.getEstadoProyecto())
-                    .urlPdf( proy.getUrlPdf())
+                    .urlPdfs( proy.getUrlPdfs())
                     .destacar( proy.isDestacar())
                     .build()
             ).collect(Collectors.toList());
@@ -270,6 +270,7 @@ public class PortafolioService {
 
             subqueryForm.select(subqueryFormRoot.get("usuario").get("idUsuario"))
                     .where(cb.or(
+                            cb.like(cb.lower(subqueryFormRoot.get("institucion")),formacionLike),
                             cb.like(cb.lower(subqueryFormRoot.get("area")), formacionLike),
                             cb.like(cb.lower(subqueryFormRoot.get("tituloObtenido")), formacionLike),
                             cb.like(cb.lower(subqueryFormRoot.get("nivel").as(String.class)), formacionLike)

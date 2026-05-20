@@ -61,7 +61,7 @@ public class Proyecto {
 
     private boolean destacar = true;
 
-    private String urlPdf;
+    private List<String> urlPdfs;
 
     private String fechaInicio;
     private String fechaFinalizacion;

@@ -91,7 +91,7 @@ public class PortafolioCompletoDTO {
         private List<String> tecnologias; // Nombres de las tecnologías
         private String enlaceGithub;
         private String enlaceDemo;
-        private String urlPdf;
+        private List<String> urlPdfs;
         private boolean destacar;
         private String fechaInicio;
         private String fechaFinalizacion;
