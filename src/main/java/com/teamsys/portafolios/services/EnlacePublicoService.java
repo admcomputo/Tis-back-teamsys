@@ -87,14 +87,14 @@ public class EnlacePublicoService {
         return new EnlacePublicoDTO(urlFinal);
     }
 
-    private String obtenerCorreo(String urlOTextoCompleto){
+    private String obtenerCorreo(String urlOTextoCompleto) {
         String codigo = urlOTextoCompleto;
-        
+        if (codigo.contains("-")) {
+            codigo = codigo.substring(codigo.lastIndexOf("-") + 1);
+        }
         // 2. DECODIFICACIÓN: Convertimos el código de nuevo a texto plano (correo)
         byte[] decodedBytes = Base64.getUrlDecoder().decode(codigo);
-        String correoDecodificado = new String(decodedBytes).trim();
-
-        return correoDecodificado;
+        return new String(decodedBytes).trim();
     }
 
     // CORRECCIÓN: Se corrigieron las variables cruzadas y tipos devueltos según PortafolioCompletoDTO
