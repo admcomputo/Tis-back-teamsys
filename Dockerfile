@@ -2,7 +2,9 @@
 FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
 COPY . .
-RUN mvn clean package -DskipTests
+
+# Run the build, then immediately list all files recursively to find the JAR
+RUN mvn clean package -DskipTests && echo "--- CONTENIDO DEL DIRECTORIO TARGET ---" && ls -la target/
 
 # Paso 2: Ejecutar la aplicación
 FROM eclipse-temurin:17-jdk-jammy
